@@ -1,10 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import counterReducer from "./store/reducer/counter";
+import userReducer from "./store/reducer/user";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const reducer = combineReducers({
+    counter: counterReducer,
+    user: userReducer
+});
+const store = createStore(reducer, applyMiddleware(thunk));
+
+const app = <Provider store={store}>
+                <App />
+            </Provider>
+
+ReactDOM.render(app, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
